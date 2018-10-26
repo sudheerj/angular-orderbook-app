@@ -1,0 +1,9 @@
+{
+    "data": [
+        {"buyQty": 400, "buyPrice": 20.00, "sellQty": 23.90, "sellPrice": 50},
+        {"buyQty": 850, "buyPrice": 12.00, "sellQty": 24, "sellPrice": 1000},
+        {"buyQty": 25, "buyPrice": 10.00, "sellQty": 24.45, "sellPrice": 1000},
+        {"buyQty": 750, "buyPrice": 6.00, "sellQty": 24.90, "sellPrice": 925},
+        {"buyQty": 500, "buyPrice": 5.10, "sellQty": 25.90, "sellPrice": 3950}
+    ]
+}

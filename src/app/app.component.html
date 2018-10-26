@@ -1,0 +1,89 @@
+<div class="layout-wrapper">
+    <div id="layout-topbar">
+        An Order Book Application
+    </div>
+    <div class="dataGridStyle">
+    <p-table [columns]="cols" [value]="orders" selectionMode="single" [(selection)]="selectedOrder" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="10" [alwaysShowPaginator]="false">
+        <ng-template pTemplate="caption">
+            <span class="titleStyle">An Order Book</span>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th colspan="2">Buy Orders</th>
+                <th colspan="2">Sell Orders</th>
+            </tr>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns" [ngClass]="(col.header == 'Buy Qty' || col.header == 'Buy Price') ? 'buyStyle' : (rowData.buyPrice > rowData.sellPrice ? 'redStyle' : 'sellStyle')">
+                    {{rowData[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="summary" let-rowData>
+            <div style="text-align:left">
+                <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Add Order"></button>
+            </div>
+        </ng-template>
+    </p-table>
+    <p-dialog header="Order Details" [(visible)]="displayDetailsDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="300">
+        <form #orderSelectedForm="ngForm" novalidate>
+            <div class="ui-g ui-fluid" *ngIf="order">
+                <div class="ui-g-4"><label for="buyQty">Buy Quantity</label></div>
+                <div class="ui-g-8"><input type="number" pInputText id="buyQty" name="buyQty" [(ngModel)]="order.buyQty" required placeholder="Give positive Integer only"/></div>
+
+                <div class="ui-g-4"><label for="buyPrice">Buy Price</label></div>
+                <div class="ui-g-8"><input type="number" pInputText id="buyPrice" name="buyPrice" [(ngModel)]="order.buyPrice" required placeholder="Give positive Integer only"/></div>
+
+                <div class="ui-g-4"><label for="sellQty">Sell Quantity</label></div>
+                <div class="ui-g-8"><input type="number" pInputText id="sellQty" name="sellQty" [(ngModel)]="order.sellQty" required placeholder="Give positive Integer only"/></div>
+
+                <div class="ui-g-4"><label for="sellPrice">Sell Price</label></div>
+                <div class="ui-g-8"><input type="number" pInputText id="sellPrice" name="sellPrice" [(ngModel)]="order.sellPrice" required placeholder="Give positive Integer only"/></div>
+            </div>
+            <p-footer>
+                <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                    <button type="button" pButton icon="pi pi-check" (click)="save()" label="Submit" [disabled]="!orderSelectedForm.form.valid"></button>
+                </div>
+            </p-footer>
+        </form>
+    </p-dialog>
+        <p-dialog header="Order Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="500">
+            <form #orderForm="ngForm" novalidate>
+            <div class="ui-g ui-fluid" *ngIf="order">
+                <div class="ui-g" style="width:250px;margin-bottom:10px">
+                    <div class="ui-g-4"><label>Order Type</label></div>
+                    <p-radioButton name="orderGroup" value="buy" label="Buy" [(ngModel)]="orderType" inputId="preopt1"></p-radioButton>&nbsp;&nbsp;&nbsp;
+                    <p-radioButton name="orderGroup" value="sell" label="Sell" [(ngModel)]="orderType" inputId="preopt2"></p-radioButton>
+                </div>
+                <div *ngIf="orderType=='buy'">
+                    <div class="ui-g-4"><label for="buyQty">Buy Quantity</label></div>
+                    <div class="ui-g-8"><input type="number" pInputText id="buyQty" name="buyQty" [(ngModel)]="order.buyQty" required placeholder="Give positive Integer only" class="ng-dirty ng-invalid" /></div>
+
+                    <div class="ui-g-4"><label for="buyPrice">Buy Price</label></div>
+                    <div class="ui-g-8"><input type="number" pInputText id="buyPrice"  name="buyPrice" [(ngModel)]="order.buyPrice" required placeholder="Give positive Integer only" class="ng-dirty ng-invalid" /></div>
+                </div>
+                <div *ngIf="orderType!='buy'">
+                    <div class="ui-g-4"><label for="sellQty">Sell Quantity</label></div>
+                    <div class="ui-g-6"><input type="number" pInputText id="sellQty" name="sellQty" [(ngModel)]="order.sellQty" required placeholder="Give positive Integer only" class="ng-dirty ng-invalid" /></div>
+
+                    <div class="ui-g-4"><label for="sellPrice">Sell Price</label></div>
+                    <div class="ui-g-6"><input type="number" pInputText id="sellPrice" name="sellPrice" [(ngModel)]="order.sellPrice" required placeholder="Give positive Integer only" class="ng-dirty ng-invalid" /></div>
+                </div>
+            </div>
+            <p-footer>
+                <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                    <button type="button" pButton icon="pi pi-check" (click)="save()" label="Submit" [disabled]="!orderForm.form.valid"></button>
+                </div>
+            </p-footer>
+            </form>
+        </p-dialog>
+    </div>
+</div>
+
